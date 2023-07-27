@@ -1,8 +1,7 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getData,postData } from "./Store/action";
-import { connect } from 'react-redux';
-
+import { getData, postData } from "./Store/action";
+import { connect } from "react-redux";
 
 const App = (props) => {
   let inputValues = {
@@ -17,8 +16,8 @@ const App = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-   props.getData()
-}, []);
+    props.getData();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,20 +26,22 @@ const App = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/SignInpage");
+
     let array = {
       firstName: inputValues.firstName,
-      lastName:inputValues.lastName,
-      password:inputValues.password,
-      confirmPassword:inputValues.cofirmPassword
-  };
-  props.addPositionList(array).then((res) => {
-    if (res?.data?.status == 200) {
-        alert("sucessful")
-    } else {
-      alert("unsucessful")
-    }
-});
+      lastName: inputValues.lastName,
+      password: inputValues.password,
+      confirmPassword: inputValues.cofirmPassword,
+    };
+    props.postData(array).then((res) => {
+      if (res?.data?.status == 200) {
+        alert("sucessful");
+        navigate("/SignInpage");
+      } else {
+        alert("unsucessful");
+        setData('')
+      }
+    });
   };
 
   const renderInputFields = () => {
@@ -100,17 +101,13 @@ const App = (props) => {
   return <>{renderInputFields()}</>;
 };
 
-
 const mapStateToProps = (state) => ({
   getData: state.reducer.getData,
-
 });
 
 const mapDispatchToProps = {
-  getData: getData,  
+  getData: getData,
 };
-
-
 
 // export default App;
 
